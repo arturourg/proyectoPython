@@ -1,8 +1,10 @@
+CREATE DATABASE vacunatorio;
+
 CREATE TABLE PACIENTE (
     RUT                 VARCHAR(10),
     NOMBRE              VARCHAR(100),
     APELLIDOS           VARCHAR(100),
-    FECHA_NACIMIENTO    DATE
+    FECHA_NACIMIENTO    DATE,
     PRIMARY KEY (RUT)
 );
 
