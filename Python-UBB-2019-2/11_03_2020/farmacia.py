@@ -8,7 +8,7 @@ import pymysql.cursors
 
 app = Flask(__name__)
 app.config["MYSQL_DATABASE_USER"] = "root"
-app.config["MYSQL_DATABASE_DB"]  = "farmacias"
+app.config["MYSQL_DATABASE_DB"]  = "vacunatorio"
 
 mysql = MySQL(app)
 mysql.connect_args["autocommit"] = True
@@ -35,7 +35,29 @@ def actualiza():
 			print(e)
 			continue
 	return (f"Se han insertado {c} registros", 200)
-		
+
+#addVacuna (Arturo)
+@app.route('/addVacuna')
+def actualiza():
+	url = "https://farmanet.minsal.cl/index.php/ws/getLocales"
+	r  =  requests.get(url)
+	cursor = mysql.get_db().cursor()
+	cursor.execute("TRUNCATE farmacia")
+	
+	c = 0
+	for objeto in json.loads(r.text[1:]):
+		try:
+			lat = float(objeto["local_lat"])
+			lng = float(objeto["local_lng"])
+			sql = "INSERT INTO farmacia (nombre_farmacia, direccion, ciudad, latitud, longitud, telefono)"
+			sql+= " VALUES (%s,%s,%s,%s,%s,%s)"
+			cursor.execute(sql,(objeto["local_nombre"],objeto["local_direccion"],objeto["comuna_nombre"],lat,lng,objeto["local_telefono"]))
+			c+=1
+		except Exception as e:
+			print(e)
+			continue
+	return (f"Se han insertado {c} registros", 200)
+
 @app.route('/')
 def hello():
 	url = "https://farmanet.minsal.cl/index.php/ws/getLocales"
