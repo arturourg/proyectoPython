@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<style type="text/css">
+		table{
+			width: 100%;
+		}
+	</style>
+</head>
+<body>
+	<h1>Ciudades en Shile</h1>
+	<table>
+		<thead>
+			<tr>
+				<th>Region</th>
+				<th>Ciudades</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for region,ciudades in regiones.items() %}
+				<tr>
+					<td>{{ region }}</td>
+					<td>
+						<ul>
+							{% for ciudad in ciudades %}
+								<li>{{ ciudad }}</li>
+							{% endfor %}
+						</ul>
+					</td>
+				</tr>
+			{% endfor %}
+			
+		</tbody>
+	</table>
+</body>
+</html>
