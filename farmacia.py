@@ -5,37 +5,58 @@ from flaskext.mysql import MySQL
 import pymysql
 import pymysql.cursors
 
+from flask_wtf import FlaskForm
+from wtforms import StringField, SubmitField
+from wtforms.validators import DataRequired, Length
+
 
 app = Flask(__name__)
 app.config["MYSQL_DATABASE_USER"] = "root"
 app.config["MYSQL_DATABASE_DB"]  = "vacunatorio"
+
+app.config['SECRET_KEY'] = 'c5f44a801f29abe08ec730b800ba33c3'
 
 mysql = MySQL(app)
 mysql.connect_args["autocommit"] = True
 mysql.connect_args["cursorclass"] = pymysql.cursors.DictCursor
 
 
-@app.route('/actualizaFarmacias')
-def actualiza():
-	url = "https://farmanet.minsal.cl/index.php/ws/getLocales"
-	r  =  requests.get(url)
+#insertPaciente
+@app.route('/paciente/add', methods=["GET","POST"])
+def addPaciente():
 	cursor = mysql.get_db().cursor()
-	cursor.execute("TRUNCATE farmacia")
+
+	if request.method == "GET":
+		nombre = request.args.get('nombre', default = "", type = str)
+		apellidos = request.args.get('apellidos', default = "", type = str)
+		rut = request.args.get('rut', default = "", type = str)
+		nacimiento = request.args.get('nacimiento', default = "", type = str)
+
+		if nombre != "" and apellidos != "" and rut != "" and nacimiento !="":
+			try:
+				sql = "INSERT INTO PACIENTE (NOMBRE, APELLIDOS, RUT, FECHA_NACIMIENTO)"
+				sql+= " VALUES (%s,%s,%s,%s)"
+				cursor.execute(sql,(nombre,apellidos,rut, nacimiento))
+			except Exception as e:
+				print(e)
+
+	if request.method == "POST":
+		nombre = request.form['nombre']
+		apellidos =request.form['apellidos']
+		rut = request.form['rut']
+		nacimiento = request.form['nacimiento']
+
+		if nombre != "" and apellidos != "" and rut != "" and nacimiento !="":
+			try:
+				sql = "INSERT INTO PACIENTE (NOMBRE, APELLIDOS, RUT, FECHA_NACIMIENTO)"
+				sql+= " VALUES (%s,%s,%s,%s)"
+				cursor.execute(sql,(nombre, apellidos, rut, nacimiento))
+			except Exception as e:
+				print(e)
 	
-	c = 0
-	for objeto in json.loads(r.text[1:]):
-		try:
-			lat = float(objeto["local_lat"])
-			lng = float(objeto["local_lng"])
-			sql = "INSERT INTO farmacia (nombre_farmacia, direccion, ciudad, latitud, longitud, telefono)"
-			sql+= " VALUES (%s,%s,%s,%s,%s,%s)"
-			cursor.execute(sql,(objeto["local_nombre"],objeto["local_direccion"],objeto["comuna_nombre"],lat,lng,objeto["local_telefono"]))
-			c+=1
-		except Exception as e:
-			print(e)
-			continue
-	return (f"Se han insertado {c} registros", 200)
-		
+	return render_template('addPaciente.html', title='Registro de pacientes')
+
+
 @app.route('/')
 def hello():
 	url = "https://farmanet.minsal.cl/index.php/ws/getLocales"
