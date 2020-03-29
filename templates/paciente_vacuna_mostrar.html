@@ -49,18 +49,28 @@
 		<div class="container">
 			
 				<div class="page-header">
-	<h3><span class="glyphicon glyphicon-th-list"></span> LISTAR VACUNAS</h3>
+	<h3><span class="glyphicon glyphicon-th-list"></span> TODAS LAS VACUNAS DEL PACIENTE</h3>
 	<br>
   <table class="table table-hover" id="myTable">
     <thead>
       <tr>
-        <th>Nombre Enfermedad</th>
+        <th>RUT</th>
+        <th>NOMBRES</th>
+        <th>APELLIDOS</th>
+        <th>FECHA NACIMIENTO</th>
+        <th>NOMBRE ENFERMEDAD</th>
+        <th>FECHA VACUNA</th>
       </tr>
     </thead>
     <tbody>
-      {% for NOMBRE_ENFERMEDAD in lista_vacu %}
+      {% for NOMBRE in vacuna_pacientes %}
         <tr>
-          <td>{{ NOMBRE_ENFERMEDAD['NOMBRE_ENFERMEDAD']}}</td>          
+          <td>{{ NOMBRE['RUT']}}</td>      
+          <td>{{ NOMBRE['NOMBRE']}}</td>    
+          <td>{{ NOMBRE['APELLIDOS']}}</td>    
+          <td>{{ NOMBRE['FECHA_NACIMIENTO']}}</td>       
+          <td>{{ NOMBRE['NOMBRE_ENFERMEDAD']}}</td>    
+          <td>{{ NOMBRE['FECHA_VACUNA']}}</td>     
         </tr>
       {% endfor %}
     </tbody>
@@ -69,7 +79,6 @@
 </div>
 </div>
 </div>
-
 </body>
 <script type="text/javascript">
   $(document).ready( function () {

@@ -26,7 +26,7 @@ def hello():
 			diccionario[llave_region] = []
 		if objeto["comuna_nombre"] not in diccionario[llave_region]:
 			diccionario[llave_region].append(objeto["comuna_nombre"])
-	return render_template('plantilla.html', regiones=diccionario)
+	return render_template('inicio.html', regiones=diccionario)
 
 
 
@@ -50,8 +50,6 @@ def vacunas():
 
 
 	vacuna_ = cursor.fetchall()
-	print("aqui")
-	print(vacuna_)
 	return render_template("listar_vacunas.html",lista_vacu = vacuna_)
 
 
@@ -75,10 +73,62 @@ def paciente():
 	cursor.execute(sql)
 
 	paciente_ = cursor.fetchall()
-	print("aqui")
-	print(paciente_)
 	return render_template("listar_pacientes.html",lista_paci = paciente_,RUT=RUT, NOMBRE=NOMBRE, APELLIDOS=APELLIDOS,FECHA_NACIMIENTO=FECHA_NACIMIENTO) 
 
+
+@app.route('/paciente_vacuna', methods=["GET","POST"])
+def paciente2():
+	cursor = mysql.get_db().cursor()
+	cursor2 = mysql.get_db().cursor()
+	
+	if request.method == "GET":
+		selec = request.args.get('selec', default = "", type = str)
+
+
+	if request.method == "POST":
+		selec = request.form["selec"]
+
+
+	sql = "SELECT * FROM `paciente`"
+	cursor.execute(sql)
+	if selec!="":
+		sql2="SELECT p.RUT,p.NOMBRE,p.APELLIDOS,p.FECHA_NACIMIENTO,v.NOMBRE_ENFERMEDAD,r.FECHA_VACUNA FROM paciente p,recibe r,vacuna v where p.RUT=r.RUT and r.NOMBRE_ENFERMEDAD=v.NOMBRE_ENFERMEDAD and p.RUT=%s"
+		cursor2.execute(sql2,(selec,))
+		vacuna_del_paciente_ = cursor2.fetchall()
+		return render_template("mostrar_vacunas_paciente.html",vacuna_del_paciente = vacuna_del_paciente_) 
+
+
+	paciente_ = cursor.fetchall()
+	return render_template("paciente_vacuna.html",lista_paci = paciente_) 
+
+
+
+@app.route('/vacuna_paciente', methods=["GET","POST"])
+def vacuna_paciente():
+	cursor = mysql.get_db().cursor()
+	cursor2 = mysql.get_db().cursor()
+	
+	if request.method == "GET":
+		selec = request.args.get('selec', default = "", type = str)
+
+
+	if request.method == "POST":
+		selec = request.form["selec"]
+
+
+	sql = "SELECT NOMBRE_ENFERMEDAD FROM `vacuna`"
+	cursor.execute(sql)
+
+	
+	if selec!="":
+		sql2="SELECT p.RUT,p.NOMBRE,p.APELLIDOS,p.FECHA_NACIMIENTO,v.NOMBRE_ENFERMEDAD,r.FECHA_VACUNA FROM paciente p,recibe r,vacuna v where p.RUT=r.RUT and r.NOMBRE_ENFERMEDAD=v.NOMBRE_ENFERMEDAD  and v.NOMBRE_ENFERMEDAD=%s"
+		cursor2.execute(sql2,(selec,))
+		vacuna_pacientes_ = cursor2.fetchall()
+		return render_template("paciente_vacuna_mostrar.html",vacuna_pacientes = vacuna_pacientes_)
+
+
+	vacuna_ = cursor.fetchall()
+	return render_template("vacuna_paciente.html",lista_vacu = vacuna_)
 
 
 if __name__ == "__main__":
