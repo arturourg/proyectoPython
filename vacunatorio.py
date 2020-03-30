@@ -17,16 +17,7 @@ mysql.connect_args["cursorclass"] = pymysql.cursors.DictCursor
 	
 @app.route('/')
 def hello():
-	url = "https://farmanet.minsal.cl/index.php/ws/getLocales"
-	r  =  requests.get(url)
-	diccionario = {}
-	for objeto in json.loads(r.text[1:]):
-		llave_region = f"region_{objeto['fk_region']}" 
-		if llave_region not in diccionario:
-			diccionario[llave_region] = []
-		if objeto["comuna_nombre"] not in diccionario[llave_region]:
-			diccionario[llave_region].append(objeto["comuna_nombre"])
-	return render_template('inicio.html', regiones=diccionario)
+	return render_template('inicio.html')
 
 
 
@@ -195,5 +186,40 @@ def addVacuna():
 	
 	return render_template('addVacuna.html', title='Nueva vacuna')
 
+@app.route('/vacunar_paciente', methods=["GET","POST"])
+def vacunarPaciente():
+	cursor = mysql.get_db().cursor()
+	cursor2 = mysql.get_db().cursor()
+
+	if request.method == "GET":
+		selec = request.args.get('selec', default = "", type = str)
+
+	if request.method == "POST":
+		selec = request.form["selec"]
+
+
+	#if selec!="":	
+
+		#return render_template("mostrar_vacunas_paciente.html",vacuna_del_paciente = vacuna_del_paciente_) 
+	
+
+	sql="SELECT RUT, NOMBRE, APELLIDOS, FECHA_NACIMIENTO FROM paciente where  RUT=5476546484"
+	cursor.execute(sql)
+	vacuna_del_paciente_ = cursor.fetchall()
+
+
+	#MOSTRAR VACUNAS
+	sql2 = "SELECT NOMBRE_ENFERMEDAD FROM VACUNA"
+	cursor2.execute(sql2)
+	vacunas_ = cursor.fetchall()
+
+
+	return render_template("vacunar_paciente.html", paciente = vacuna_del_paciente_, lista_vacu = vacunas_)
+	#vacuna_del_paciente_ = cursor.fetchall()
+	#paciente_ = cursor.fetchall()
+	#return render_template("vacunar_paciente.html", paciente = vacuna_del_paciente_) #RUT=RUT, NOMBRE=NOMBRE, APELLIDOS=APELLIDOS,FECHA_NACIMIENTO=FECHA_NACIMIENTO paciente = paciente_,
+
+
 if __name__ == "__main__":
 	app.run(debug=True)
+

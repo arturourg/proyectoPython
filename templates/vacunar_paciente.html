@@ -5,8 +5,6 @@
 <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 <!------ Include the above in your HEAD tag ---------->
 
-
-
 <div class="row affix-row">
     <div class="col-sm-3 col-md-2 affix-sidebar">
 		<div class="sidebar-nav">
@@ -49,21 +47,54 @@
 		<div class="container">
 			
 			<div class="page-header">
-	      <h3><span class="glyphicon glyphicon-th-list"></span> NUEVA VACUNA</h3>
+	      <h3><span class="glyphicon glyphicon-th-list"></span> Vacunar Paciente</h3>
       </div>
+
+      
+
+
   <form action="" method="POST">
+
     <div class="form-group row">
-      <label for="enfermedad" class="col-sm-2 col-form-label">Enfermedad:</label>
-      <div class="col-sm-10">
-        <input type="text" class="form-control" id="enfermedad" placeholder="enfermedad" name="enfermedad" value="{{ enfermedad }}">
-      </div>
-    </div>
+
+        <table class="table">
+            {% for NOMBRE in paciente %}
+            <tbody>
+              <tr>
+                <th scope="row">Nombres:</th>
+                <td>{{ NOMBRE['NOMBRE']}}</td>
+              </tr>
+              <tr>
+                <th scope="row">Apellidos:</th>
+                <td>{{ NOMBRE['APELLIDOS']}}</td>
+              </tr>
+              <tr>
+                <th scope="row">RUT:</th>
+                <td>{{ NOMBRE['RUT']}}</td>
+              </tr>
+              <tr>
+                <th scope="row">Fecha de nacimiento:</th>
+                <td>{{ NOMBRE['FECHA_NACIMIENTO']}}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+             <tr>
+                 <th scope="row">Vacuna:</th>
+                 <td>
+                    <select id="inputState" class="form-control">
+                        {% for ENFERMEDAD in lista_vacu %}
+                        <option selected>{{ ENFERMEDAD[NOMBRE_ENFERMEDAD] }}</option>
+                        {% endfor %}
+                      </select>
+                 </td>
+             </tr>
+
+          </table>
 
     <div class="form-group row">
       <div class="col-sm-10">
-        <button type="submit" class="btn btn-primary">Guardar</button>
+        <button type="submit" class="btn btn-primary">GUARDAR</button>
       </div>
-
     </div>
   </form>
 </div>
