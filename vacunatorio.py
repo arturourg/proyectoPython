@@ -74,20 +74,27 @@ def paciente2():
 	
 	if request.method == "GET":
 		selec = request.args.get('selec', default = "", type = str)
-
+		vacunar = request.args.get('vacunar', default = "", type = str)
 
 	if request.method == "POST":
 		selec = request.form["selec"]
-
+		vacunar = request.form["vacunar"]
 
 	sql = "SELECT * FROM `paciente`"
 	cursor.execute(sql)
-	if selec!="":
+	if vacunar!="":
+		sql2="SELECT DISTINCT p.RUT,p.NOMBRE,p.APELLIDOS,p.FECHA_NACIMIENTO,v.NOMBRE_ENFERMEDAD,r.FECHA_VACUNA FROM paciente p,recibe r,vacuna v where p.RUT=r.RUT and r.NOMBRE_ENFERMEDAD=v.NOMBRE_ENFERMEDAD and p.RUT=%s"
+		cursor2.execute(sql2,(selec,))
+		rut_a_vacunar_ = cursor2.fetchall()
+		return render_template("vacunar_pacientes.html",rut_a_vacunar = rut_a_vacunar_)
+
+	elif selec!="":
 		sql2="SELECT p.RUT,p.NOMBRE,p.APELLIDOS,p.FECHA_NACIMIENTO,v.NOMBRE_ENFERMEDAD,r.FECHA_VACUNA FROM paciente p,recibe r,vacuna v where p.RUT=r.RUT and r.NOMBRE_ENFERMEDAD=v.NOMBRE_ENFERMEDAD and p.RUT=%s"
 		cursor2.execute(sql2,(selec,))
 		vacuna_del_paciente_ = cursor2.fetchall()
 		return render_template("mostrar_vacunas_paciente.html",vacuna_del_paciente = vacuna_del_paciente_) 
-
+	
+	
 
 	paciente_ = cursor.fetchall()
 	return render_template("paciente_vacuna.html",lista_paci = paciente_) 
@@ -122,6 +129,7 @@ def vacuna_paciente():
 	return render_template("vacuna_paciente.html",lista_vacu = vacuna_)
 
 
+<<<<<<< HEAD
 #insertPaciente
 @app.route('/paciente/add', methods=["GET","POST"])
 def addPaciente():
@@ -220,6 +228,8 @@ def vacunarPaciente():
 	#return render_template("vacunar_paciente.html", paciente = vacuna_del_paciente_) #RUT=RUT, NOMBRE=NOMBRE, APELLIDOS=APELLIDOS,FECHA_NACIMIENTO=FECHA_NACIMIENTO paciente = paciente_,
 
 
+=======
+>>>>>>> aea4f61d4bcdf70485fdd99eeec05398d1da9797
 if __name__ == "__main__":
 	app.run(debug=True)
 
