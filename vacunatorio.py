@@ -17,16 +17,7 @@ mysql.connect_args["cursorclass"] = pymysql.cursors.DictCursor
 	
 @app.route('/')
 def hello():
-	url = "https://farmanet.minsal.cl/index.php/ws/getLocales"
-	r  =  requests.get(url)
-	diccionario = {}
-	for objeto in json.loads(r.text[1:]):
-		llave_region = f"region_{objeto['fk_region']}" 
-		if llave_region not in diccionario:
-			diccionario[llave_region] = []
-		if objeto["comuna_nombre"] not in diccionario[llave_region]:
-			diccionario[llave_region].append(objeto["comuna_nombre"])
-	return render_template('inicio.html', regiones=diccionario)
+	return render_template('inicio.html')
 
 
 
@@ -129,6 +120,73 @@ def vacuna_paciente():
 
 	vacuna_ = cursor.fetchall()
 	return render_template("vacuna_paciente.html",lista_vacu = vacuna_)
+
+
+#insertPaciente
+@app.route('/paciente/add', methods=["GET","POST"])
+def addPaciente():
+	cursor = mysql.get_db().cursor()
+
+	if request.method == "GET":
+		nombre = request.args.get('nombre', default = "", type = str)
+		apellidos = request.args.get('apellidos', default = "", type = str)
+		rut = request.args.get('rut', default = "", type = str)
+		nacimiento = request.args.get('nacimiento', default = "", type = str)
+
+		if nombre != "" and apellidos != "" and rut != "" and nacimiento !="":
+			try:
+				sql = "INSERT INTO PACIENTE (NOMBRE, APELLIDOS, RUT, FECHA_NACIMIENTO)"
+				sql+= " VALUES (%s,%s,%s,%s)"
+				cursor.execute(sql,(nombre,apellidos,rut, nacimiento))
+			except Exception as e:
+				print(e)
+
+	if request.method == "POST":
+		nombre = request.form['nombre']
+		apellidos =request.form['apellidos']
+		rut = request.form['rut']
+		nacimiento = request.form['nacimiento']
+
+		if nombre != "" and apellidos != "" and rut != "" and nacimiento !="":
+			try:
+				sql = "INSERT INTO PACIENTE (NOMBRE, APELLIDOS, RUT, FECHA_NACIMIENTO)"
+				sql+= " VALUES (%s,%s,%s,%s)"
+				cursor.execute(sql,(nombre, apellidos, rut, nacimiento))
+			except Exception as e:
+				print(e)
+	
+	
+	return render_template('addPaciente.html', title='Registro de pacientes')
+
+#insertPaciente
+@app.route('/vacuna/add', methods=["GET","POST"])
+def addVacuna():
+	cursor = mysql.get_db().cursor()
+
+	if request.method == "GET":
+		enfermedad = request.args.get('enfermedad', default = "", type = str)
+		
+		if enfermedad != "":
+			try:
+				sql = "INSERT INTO VACUNA (NOMBRE_ENFERMEDAD)"
+				sql+= " VALUES (%s)"
+				cursor.execute(sql,(enfermedad))
+			except Exception as e:
+				print(e)
+
+	if request.method == "POST":
+		enfermedad = request.form['enfermedad']
+
+		if enfermedad != "":
+			try:
+				sql = "INSERT INTO VACUNA (NOMBRE_ENFERMEDAD)"
+				sql+= " VALUES (%s)"
+				cursor.execute(sql,(enfermedad))
+			except Exception as e:
+				print(e)
+	
+	
+	return render_template('addVacuna.html', title='Nueva Vacuna')
 
 
 if __name__ == "__main__":
