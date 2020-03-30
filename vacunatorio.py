@@ -131,5 +131,69 @@ def vacuna_paciente():
 	return render_template("vacuna_paciente.html",lista_vacu = vacuna_)
 
 
+#insertPaciente
+@app.route('/paciente/add', methods=["GET","POST"])
+def addPaciente():
+	cursor = mysql.get_db().cursor()
+
+	if request.method == "GET":
+		nombre = request.args.get('nombre', default = "", type = str)
+		apellidos = request.args.get('apellidos', default = "", type = str)
+		rut = request.args.get('rut', default = "", type = str)
+		nacimiento = request.args.get('nacimiento', default = "", type = str)
+
+		if nombre != "" and apellidos != "" and rut != "" and nacimiento !="":
+			try:
+				sql = "INSERT INTO PACIENTE (NOMBRE, APELLIDOS, RUT, FECHA_NACIMIENTO)"
+				sql+= " VALUES (%s,%s,%s,%s)"
+				cursor.execute(sql,(nombre,apellidos,rut, nacimiento))
+			except Exception as e:
+				print(e)
+
+	if request.method == "POST":
+		nombre = request.form['nombre']
+		apellidos =request.form['apellidos']
+		rut = request.form['rut']
+		nacimiento = request.form['nacimiento']
+
+		if nombre != "" and apellidos != "" and rut != "" and nacimiento !="":
+			try:
+				sql = "INSERT INTO PACIENTE (NOMBRE, APELLIDOS, RUT, FECHA_NACIMIENTO)"
+				sql+= " VALUES (%s,%s,%s,%s)"
+				cursor.execute(sql,(nombre, apellidos, rut, nacimiento))
+			except Exception as e:
+				print(e)
+	
+	return render_template('addPaciente.html', title='Registro de pacientes')
+
+#insertvacuna
+@app.route('/vacuna/add', methods=["GET","POST"])
+def addVacuna():
+	cursor = mysql.get_db().cursor()
+
+	if request.method == "GET":
+		enfermedad = request.args.get('enfermedad', default = "", type = str)
+
+		if enfermedad != "":
+			try:
+				sql = "INSERT INTO VACUNA (NOMBRE_ENFERMEDAD)"
+				sql+= " VALUES (%s)"
+				cursor.execute(sql,(enfermedad))
+			except Exception as e:
+				print(e)
+
+	if request.method == "POST":
+		enfermedad = request.form['enfermedad']
+
+		if enfermedad != "":
+			try:
+				sql = "INSERT INTO VACUNA (NOMBRE_ENFERMEDAD)"
+				sql+= " VALUES (%s)"
+				cursor.execute(sql,(enfermedad))
+			except Exception as e:
+				print(e)
+	
+	return render_template('addVacuna.html', title='Nueva vacuna')
+
 if __name__ == "__main__":
 	app.run(debug=True)
