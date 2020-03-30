@@ -1,6 +1,6 @@
 # proyectoPython
 
-	<h3><span class="glyphicon glyphicon-th-list"></span> ENUNCIADO TRABAJO</h3>
+	<h3>ENUNCIADO TRABAJO</h3>
 </div>
 Estimados:<br>
 <br>
