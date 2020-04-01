@@ -1,6 +1,6 @@
 # Vacunatorio Coelemu
 
-	<h3>ENUNCIADO TRABAJO</h3>
+## ENUNCIADO TRABAJO
 
 Vacunatorio Coelemu requiere un sistema para manejar sus pacientes e inventario de vacunas. El proyecto Realiza lo siguiente:<br>
 <br>
