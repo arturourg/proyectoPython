@@ -1,12 +1,8 @@
-# proyectoPython
+# Vacunatorio Coelemu
 
 	<h3>ENUNCIADO TRABAJO</h3>
-</div>
-Estimados:<br>
-<br>
-Adjunto a uds un wireframe con la funcionalidad básica del proyecto. (pueden hacer click en los botones del pdf)<br>
-<br>
-Vacunatorio Coelemu requiere un sistema para manejar sus pacientes e inventario de vacunas. El proyecto debe poder:<br>
+
+Vacunatorio Coelemu requiere un sistema para manejar sus pacientes e inventario de vacunas. El proyecto Realiza lo siguiente:<br>
 <br>
 - Listar todos los pacientes<br>
 - Crear pacientes<br>
@@ -15,23 +11,54 @@ Vacunatorio Coelemu requiere un sistema para manejar sus pacientes e inventario 
 - Listar pacientes que han recibido una vacuna específica<br>
 - Listar vacunas que ha recibido un paciente<br>
 - Registrar vacuna a un paciente (vacunar paciente)<br>
-<br>
-Entidades:<br>
-- Paciente (nombre, rut, fecha_nacimiento)<br>
-- Vacuna (nombre_enfermedad)<br>
-<br>
-Relaciones:<br>
-- Paciente&nbsp; ---(0,n)---Recibe---(0,n)---N&nbsp; &nbsp;Vacuna<br>
-<br>
-Consideraciones:<br>
-- Cada que se agregue una nueva vacuna, o se vacune un paciente en específico, se deberá registrar de manera automática la fecha de registro, la que después será mostrado en los listados.<br>
-- El sistema deberá utilizar una base de datos mysql, flask y jinja. Está prohibido utilizar otra forma de servidor HTTP o base de datos. Incumplir esto resultará en la nota mínima, es decir, 1.<br>
-- No se aceptarán correos después del plazo, cualquiera fuera de plazo será evaluado con nota 1.<br>
-- El proyecto deberá ser subido a un repositorio github, que deberá contener:<br>
-&nbsp; &nbsp; &nbsp; &nbsp; - Código completo del proyecto<br>
-&nbsp; &nbsp; &nbsp; &nbsp; - Archivo README con las instrucciones de instalación y desplegado<br>
-&nbsp; &nbsp; &nbsp; &nbsp; - Archivo requirements.txt con todas las dependencias utilizadas por pip<br>
-&nbsp; &nbsp; &nbsp; &nbsp; - Script sql con la estructura de la base de datos, junto con datos de pruebas en todas las tablas.<br>
-- Cada archivo .py o .html del proyecto deberá tener comentado el nombre de los integrantes <br>
-- Al entregar el proyecto, solo se deberá enviar un correo a <a href="mailto:x.zenteno.a@gmail.com" target="_blank"><span class="il">x.zenteno.a@gmail.com</span></a> con la url del repositorio github y los nombres de los integrantes, nada más. No aceptará ni menos considerará el código adjuntado al correo.<br>
-- El código no podrá estar comprimido ni compactado en un rar, zip, gzip, tar, etc. Incumplir esto resultará en la nota mínima.
+</div>
+
+# Para Ejecutar la aplicación:
+
+
+## Requisitos:
+
+Tener instalado python3, pip, GIT y MySQL.
+
+# Instalación de la aplicación:
+
+Primero debe tener el proyecto en su computadora, para esto lo puede clonar o bien descargar desde GitHub.
+
+Al tener el proyecto en su equipo, debe realizar la instalación de las dependencias necesarias para que se pueda ejecutar la aplicación correctamente. Para esto abra una consola y ubiquese en la dirección que tiene almacenado el proyecto y ejecute los siguientes comandos:
+
+```bash
+pip install -U pip
+pip install -r requirements.txt
+```
+
+
+# Configuración de la Base de datos:
+
+Para ejecutar esta aplicación debe tener una base de datos local que puede ejecutar con xampp o algún programa similar.
+Los datos que debe tener la base de datos son:
+
+Nombre de la base de datos: vacunatorio
+Usuario base de datos: root
+(No tiene contraseña) 
+
+Ahora debe crear la base de datos, para esto ejecute el SQL llamado: create_database.sql y con este crea la base de datos y el modelo de esta (incluye tres tablas: paciente, recibe, vacuna.)
+
+Luego, para tener algunos datos de prueba debe ejecutar el archivo llamado: insert.sql
+con este script tendrá algunos datos de prueba.
+
+
+# Ejecutar aplicación:
+
+Estando situado en donde se encuentra el proyecto, abra una consola y ejecute el siguiente comando:
+
+```bash
+python vacunatorio.py
+```
+Con esto se iniciará un servidor local en el puerto 5000, para poder acceder a la aplicacion
+desde su navegador ingrese a la dirección -> 127.0.0.1:5000
+
+
+# Este proyecto fue realizado por:
+
+* **César Mora - Estudiante de Ingeniería civil en informática UBB**
+* **Arturo Urra - Estudiante de Ingeniería civil en informática UBB**

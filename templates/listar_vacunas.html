@@ -25,30 +25,18 @@
         <li class="active">
           <a href="#" data-toggle="collapse" data-target="#toggleDemo0" data-parent="#sidenav01" class="collapsed">
           <h4>
-          INDICE
+          VACUNATORIO
           <br>
-          <small>PYTHON POWER <span class="caret"></span></small>
+          <small>Indice <span class="caret"></span></small>
           </h4>
           </a>
 
         </li>
         <li><a href="/"><span class="glyphicon glyphicon-calendar"></span> INICIO <span class="badge pull-right">42</span></a></li>
-        <li><a href="/listar_pacientes"><span class="glyphicon glyphicon-lock"></span> LISTAR PACIENTES</a></li>
+        <li><a href="/listar_pacientes"><span class="glyphicon glyphicon-lock"></span>LISTAR PACIENTES </a></li>
         <li><a href="/listar_vacunas"><span class="glyphicon glyphicon-lock"></span> LISTAR VACUNAS</a></li>
-        <li><a href="/vacuna_paciente"><span class="glyphicon glyphicon-lock"></span> MOSTRAR VACUNAS PACIENTE</a></li>
-        <li><a href="/paciente_vacuna"><span class="glyphicon glyphicon-lock"></span> MOSTRAR PACIENTES VACUNAS</a></li>
-<<<<<<< HEAD
         <li><a href="/vacuna/add"><span class="glyphicon glyphicon-cog"></span> INSERTAR VACUNA</a></li>
         <li><a href="/paciente/add"><span class="glyphicon glyphicon-cog"></span> INSERTAR PACIENTE</a></li>
-        <li><a href="/vacunar_paciente"><span class="glyphicon glyphicon-cog"></span> VACUNAR PACIENTE</a></li>
-<<<<<<< HEAD
-=======
-=======
-        <li><a href=""><span class="glyphicon glyphicon-cog"></span> INSERTAR VACUNA</a></li>
-        <li><a href=""><span class="glyphicon glyphicon-cog"></span> INSERTAR PACIENTE</a></li>
-        <li><a href=""><span class="glyphicon glyphicon-cog"></span> VACUNAR PACIENTE</a></li>
->>>>>>> aea4f61d4bcdf70485fdd99eeec05398d1da9797
->>>>>>> 16b5017f9b9a98ce5b2ab1390344ff4e53346599
       </ul>
 
     </div>
@@ -58,18 +46,29 @@
 		<div class="container">
 			
 				<div class="page-header">
-	<h3><span class="glyphicon glyphicon-th-list"></span> LISTAR VACUNAS</h3>
-	<br>
+	<h3><span class="glyphicon glyphicon-th-list"></span> LISTADO DE VACUNAS</h3>
+
   <table class="table table-hover" id="myTable">
     <thead>
       <tr>
-        <th>Nombre Enfermedad</th>
+        <th>Enfermedad</th>
+        <th>Fecha de Registro</th>
+        <th>Pacientes</th>
       </tr>
     </thead>
     <tbody>
       {% for NOMBRE_ENFERMEDAD in lista_vacu %}
         <tr>
-          <td>{{ NOMBRE_ENFERMEDAD['NOMBRE_ENFERMEDAD']}}</td>          
+          <td>{{ NOMBRE_ENFERMEDAD['NOMBRE_ENFERMEDAD']}}</td>
+          <td>{{ NOMBRE_ENFERMEDAD['FECHA_REGISTRO'] }}</td>
+          <td> 
+            <form class="form-inline" action="" method="POST">
+              <div class="form-group">
+                <input type="hidden" class="form-control" id="selec" name="selec" value="{{ NOMBRE_ENFERMEDAD['NOMBRE_ENFERMEDAD'] }}">
+              </div>
+              <button type="submit" class="btn btn-default">VER</button>
+            </form> 
+          </td>   
         </tr>
       {% endfor %}
     </tbody>
@@ -78,6 +77,8 @@
 </div>
 </div>
 </div>
+
+
 
 </body>
 <script type="text/javascript">
