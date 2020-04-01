@@ -50,7 +50,6 @@ def paciente2():
 
 		elif request.form.get("vacunar", None):
 			vacunar = request.form["vacunar"]
-			print("hola")
 			return redirect(url_for('.vacunarPaciente',vacunar = vacunar, **request.args))
 
 	paciente_ = cursor.fetchall()
@@ -64,11 +63,15 @@ def vacunas():
 	cursor = mysql.get_db().cursor()
 	
 	if request.method == "GET":
-		enfermedad_python = request.args.get('NOMBRE_ENFERMEDAD', default = "", type = str)
+		enfermedad_python = request.args.get('selec', default = "", type = str)
 
 	if request.method == "POST":
-		enfermedad_python = request.form["NOMBRE_ENFERMEDAD"]
-		print(enfermedad_python)
+		selec = request.form["selec"]
+		sql2="SELECT p.RUT,p.NOMBRE,p.APELLIDOS,p.FECHA_NACIMIENTO,v.NOMBRE_ENFERMEDAD,r.FECHA_VACUNA FROM paciente p,recibe r,vacuna v where p.RUT=r.RUT and r.NOMBRE_ENFERMEDAD=v.NOMBRE_ENFERMEDAD and v.NOMBRE_ENFERMEDAD=%s"
+		cursor.execute(sql2,(selec,))
+		_lista_paciente = cursor.fetchall()
+		return render_template("listar_paciente2.html",lista_paciente = _lista_paciente)
+
 	sql = "SELECT NOMBRE_ENFERMEDAD, FECHA_REGISTRO FROM `vacuna`"
 	cursor.execute(sql)
 	
@@ -130,7 +133,7 @@ def addVacuna():
 			try:
 				sql = "INSERT INTO VACUNA (FECHA_REGISTRO, NOMBRE_ENFERMEDAD)"
 				sql+= " VALUES (%s, %s)"
-				cursor.execute(sql,(datetime.today().strftime('%y-%m-%d'), enfermedad, ))
+				cursor.execute(sql,(datetime.today().strftime('%d-%m-%y'), enfermedad, ))
 			except Exception as e:
 				print(e)
 
@@ -155,9 +158,6 @@ def vacunarPaciente():
 	rut_a_vacunar = request.args.get('vacunar')
 	cursor = mysql.get_db().cursor()
 	cursor2 = mysql.get_db().cursor()
-
-	print(rut_a_vacunar)
-	print(request.form.get('nombre_enfermedad'))
 
 	if request.method == "POST":
 		#INSERTAR VACUNA
