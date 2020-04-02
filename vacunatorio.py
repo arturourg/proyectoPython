@@ -128,23 +128,21 @@ def addVacuna():
 
 	if request.method == "GET":
 		enfermedad = request.args.get('enfermedad', default = "", type = str)
-
 		if enfermedad != "":
 			try:
 				sql = "INSERT INTO VACUNA (FECHA_REGISTRO, NOMBRE_ENFERMEDAD)"
 				sql+= " VALUES (%s, %s)"
-				cursor.execute(sql,(datetime.today().strftime('%d-%m-%y'), enfermedad, ))
+				cursor.execute(sql,(datetime.today().strftime('%y-%m-%d'), enfermedad, ))
 			except Exception as e:
 				print(e)
 
 	if request.method == "POST":
 		enfermedad = request.form['enfermedad']
-
 		if enfermedad != "":
 			try:
-				sql = "INSERT INTO VACUNA (NOMBRE_ENFERMEDAD)"
-				sql+= " VALUES (%s)"
-				cursor.execute(sql,(enfermedad))
+				sql = "INSERT INTO VACUNA (FECHA_REGISTRO, NOMBRE_ENFERMEDAD)"
+				sql+= " VALUES (%s, %s)"
+				cursor.execute(sql,(datetime.today().strftime('%y-%m-%d'), enfermedad, ))
 			except Exception as e:
 				print(e)
 	
